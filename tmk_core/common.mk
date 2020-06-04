@@ -10,7 +10,6 @@ TMK_COMMON_SRC +=	$(COMMON_DIR)/host.c \
 	$(COMMON_DIR)/action_util.c \
 	$(COMMON_DIR)/print.c \
 	$(COMMON_DIR)/debug.c \
-	$(COMMON_DIR)/sendchar_null.c \
 	$(COMMON_DIR)/util.c \
 	$(COMMON_DIR)/eeconfig.c \
 	$(COMMON_DIR)/report.c \
@@ -82,8 +81,8 @@ endif
 ifeq ($(strip $(CONSOLE_ENABLE)), yes)
     TMK_COMMON_DEFS += -DCONSOLE_ENABLE
 else
-    TMK_COMMON_DEFS += -DNO_PRINT
-    TMK_COMMON_DEFS += -DNO_DEBUG
+    # TMK_COMMON_DEFS += -DNO_PRINT
+    # TMK_COMMON_DEFS += -DNO_DEBUG
 endif
 
 ifeq ($(strip $(COMMAND_ENABLE)), yes)
@@ -108,6 +107,9 @@ endif
 
 ifeq ($(strip $(NO_UART)), yes)
     TMK_COMMON_DEFS += -DNO_UART
+    TMK_COMMON_SRC += $(COMMON_DIR)/sendchar_null.c
+else
+    TMK_COMMON_SRC += $(COMMON_DIR)/sendchar_uart.c
 endif
 
 ifeq ($(strip $(NO_SUSPEND_POWER_DOWN)), yes)
