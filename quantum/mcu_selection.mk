@@ -256,7 +256,7 @@ ifneq (,$(filter $(MCU),atmega32a))
   # MCU name for avrdude
   AVRDUDE_MCU = m32
 
-  PROTOCOL = VUSB
+  PROTOCOL ?= VUSB
 
   # Processor frequency.
   #     This will define a symbol, F_CPU, in all source code files equal to the
@@ -274,7 +274,7 @@ ifneq (,$(filter $(MCU),atmega328p))
   # MCU name for avrdude
   AVRDUDE_MCU = m328p
 
-  PROTOCOL = VUSB
+  PROTOCOL ?= VUSB
 
   # Processor frequency.
   #     This will define a symbol, F_CPU, in all source code files equal to the
@@ -284,12 +284,11 @@ ifneq (,$(filter $(MCU),atmega328p))
   F_CPU ?= 16000000
 
   # unsupported features for now
-  NO_UART ?= yes
   NO_SUSPEND_POWER_DOWN ?= yes
 endif
 
 ifneq (,$(filter $(MCU),attiny85))
-  PROTOCOL = VUSB
+  PROTOCOL ?= VUSB
 
   # Processor frequency.
   #     This will define a symbol, F_CPU, in all source code files equal to the
