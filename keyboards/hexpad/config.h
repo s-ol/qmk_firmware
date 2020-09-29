@@ -23,10 +23,15 @@
 #define MATRIX_COL_PINS_RIGHT { B0, B7, B6, B5, B4, NO_PIN }
 
 /* Split options */
-#define SPLIT_HAND_PIN C5
 #define USE_SERIAL
 #define SOFT_SERIAL_PIN D0
+#define SPLIT_HAND_PIN C5
 #define MIDI_MODE_PIN D1
+
+/* MIDI */
+#define MIDI_ADVANCED 1
+#define MIDI_ENABLE_STRICT 1
+#define MIDI_TONE_KEYCODE_OCTAVES 4
 
 /* Set 0 if debouncing isn't needed */
 #define DEBOUNCE 5
@@ -38,11 +43,9 @@
 #define RGBLIGHT_EFFECT_BREATHING
 #define RGBLIGHT_EFFECT_RAINBOW_MOOD
 #define RGBLIGHT_EFFECT_RAINBOW_SWIRL
-#define RGBLIGHT_EFFECT_SNAKE
-#define RGBLIGHT_EFFECT_KNIGHT
-#define RGBLIGHT_EFFECT_RGB_TEST
-#define RGBLIGHT_EFFECT_ALTERNATING
 #define RGBLIGHT_LIMIT_VAL 120
+#define RGBLIGHT_LAYERS_OVERRIDE_RGB_OFF
+#define RGBLIGHT_LAYERS
 #define RGBW
 
 /* -------- LEFT HAND --------     -------- RIGHT HAND ------- */
