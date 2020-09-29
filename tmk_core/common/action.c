@@ -449,6 +449,9 @@ void process_action(keyrecord_t *record, action_t action) {
                             break;
                         case OP_BIT_SET:
                             default_layer_set(bits | mask);
+#ifdef DF_IS_ALSO_TO
+                            layer_state_set(bits | mask);
+#endif
                             break;
                     }
                 }
