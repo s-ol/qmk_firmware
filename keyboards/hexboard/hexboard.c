@@ -1,4 +1,4 @@
-#include "hexpad.h"
+#include "hexboard.h"
 
 bool is_keyboard_left(void) {
      // Test pin SPLIT_HAND_PIN for High/Low, if high it's right hand
