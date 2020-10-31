@@ -26,6 +26,7 @@
 #define SOFT_SERIAL_PIN D0
 #define SPLIT_HAND_PIN C5
 #define MIDI_MODE_PIN D1
+#define MASTER_RIGHT
 
 /* MIDI */
 #ifdef MIDI_ENABLE
@@ -40,21 +41,27 @@
 // #define RGBLIGHT_HEXPAD_HALF
 
 /* ws2812 RGB LED */
-#ifdef RGBLIGHT_ENABLE
+#if defined(RGBLIGHT_ENABLE) || defined(RGB_MATRIX_ENABLE)
 #   define RGB_DI_PIN C6
+#   define RGBW
 #   ifdef RGBLIGHT_HEXPAD_HALF
 #       define RGBLED_NUM 21
+#       define DRIVER_LED_TOTAL 21
 #   else
 #       define RGBLED_NUM 44
 #       define RGBLED_SPLIT { 23, 21 }
+#       define DRIVER_LED_TOTAL 44
+#       define DRIVER_LED_SPLIT { 23, 21 }
 #   endif
-#   define RGBLIGHT_EFFECT_BREATHING
-#   define RGBLIGHT_EFFECT_RAINBOW_MOOD
-#   define RGBLIGHT_EFFECT_RAINBOW_SWIRL
-#   define RGBLIGHT_LIMIT_VAL 50
-#   define RGBLIGHT_LAYERS_OVERRIDE_RGB_OFF
-#   define RGBLIGHT_LAYERS
-#   define RGBW
+#   ifdef RGBLIGHT_ENABLE
+#       define RGBLIGHT_EFFECT_BREATHING
+#       define RGBLIGHT_EFFECT_RAINBOW_MOOD
+#       define RGBLIGHT_EFFECT_RAINBOW_SWIRL
+#       define RGBLIGHT_LIMIT_VAL 180
+#       define RGBLIGHT_LAYERS_OVERRIDE_RGB_OFF
+#       define RGBLIGHT_LAYERS
+#   endif
+#   define RGB_MATRIX_MAXIMUM_BRIGHTNESS 120
 #endif
 
 #ifdef RGBLIGHT_HEXPAD_HALF
@@ -72,7 +79,7 @@
     G2, G3, G4, G5, G1,     \
     H2, H3, H4, H5, H1,     \
     I3, I4, I5, I1, I2,     \
-    J2                      \
+    J2,                     \
   }
 #else
 /* -------- LEFT HAND --------     -------- RIGHT HAND ------- */
@@ -94,7 +101,7 @@
     G2, G3, G4, G5, G1,     \
     H2, H3, H4, H5, H1,     \
     I3, I4, I5, I1, I2,     \
-    J2                      \
+    J2,                     \
   }
 #endif
 
