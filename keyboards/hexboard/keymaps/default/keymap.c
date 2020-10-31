@@ -49,7 +49,7 @@ const rgblight_segment_t PROGMEM led_layer_af[] = RGBLIGHT_LAYER_SEGMENTS(
 );
 
 const rgblight_segment_t PROGMEM led_layer_wh[] = RGBLIGHT_LAYER_SEGMENTS(
-  {23, 32, HSV_SPRINGGREEN}, {33, 9, HSV_SPRINGGREEN},
+  // {23, 32, HSV_SPRINGGREEN}, {33, 9, HSV_SPRINGGREEN},
   {32, 1, HSV_PURPLE}, {42, 1, HSV_PURPLE},
   {22, 1, HSV_ORANGE}, {43, 1, HSV_ORANGE}
 );
