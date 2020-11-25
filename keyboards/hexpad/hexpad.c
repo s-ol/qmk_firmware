@@ -1,11 +1,11 @@
 #include "hexpad.h"
 
 #ifdef RGB_MATRIX_ENABLE
-#		define Q(...) __VA_ARGS__
+#    define Q(...) __VA_ARGS__
 
 led_config_t g_led_config = {
   // indices
-  LAYOUT_hexpad( NO_LED,
+  LAYOUT_hexpad(
          0,  6,
        1,  5,  7,
      2,  4,  8, 11,
@@ -26,5 +26,5 @@ led_config_t g_led_config = {
        4,  4,  4
   ),
 };
-#		undef Q
+#    undef Q
 #endif
