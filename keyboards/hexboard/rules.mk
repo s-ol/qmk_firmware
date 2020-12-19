@@ -28,3 +28,5 @@ RGBLIGHT_ENABLE  = yes
 
 SPLIT_KEYBOARD = yes
 SPLIT_TRANSPORT = serial
+
+SRC += i2c-bitbang.c oled.c

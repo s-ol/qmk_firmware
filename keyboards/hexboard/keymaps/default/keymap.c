@@ -27,16 +27,43 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   ),
 #endif
   [_CL] = LAYOUT_hexpad( _______,
-        _______, _______, _______, _______, DF(_AF),             DF(_AF), _______, RESET, RGB_TOG, RGB_MOD,     \
-    _______, _______, _______, _______, _______, _______,            _______, _______, RGB_HUD, RGB_HUI, _______, \
-        _______, _______, _______, _______, _______,             _______, _______, _______, RGB_SAD, RGB_SAI,       \
-    _______, _______, _______, _______, _______, _______,            _______, _______, RGB_VAD, RGB_VAI, _______, \
+          RESET, RGB_TOG, RGB_MOD, _______, DF(_AF),             DF(_AF), _______, RESET, RGB_TOG, RGB_MOD,     \
+    _______, RGB_HUD, RGB_HUI, _______, _______, _______,            _______, _______, RGB_HUD, RGB_HUI, _______, \
+        RGB_SAD, RGB_SAI, _______,  _______, _______,             _______, _______, _______, RGB_SAD, RGB_SAI,       \
+    _______, RGB_VAD, RGB_VAI, _______, _______, _______,            _______, _______, RGB_VAD, RGB_VAI, _______, \
         DF(_WH),                                                                                     DF(_WH)      \
   ),
 };
 
 #ifdef RGBLIGHT_ENABLE
 
+#    ifdef RGBLIGHT_LED_MAP
+const rgblight_segment_t PROGMEM led_layer_af[] = RGBLIGHT_LAYER_SEGMENTS(
+  { 4, 2, HSV_ORANGE}
+);
+
+const rgblight_segment_t PROGMEM led_layer_wh[] = RGBLIGHT_LAYER_SEGMENTS(
+  {20, 1, HSV_PURPLE}, {41, 1, HSV_PURPLE}, {42, 2, HSV_ORANGE}
+);
+
+const rgblight_segment_t PROGMEM led_layer_cl[] = RGBLIGHT_LAYER_SEGMENTS(
+  // RGB control
+  { 1, 2, HSV_PURPLE},
+  {11, 2, HSV_PURPLE},
+  {21, 2, HSV_PURPLE},
+  {32, 2, HSV_PURPLE},
+  { 8, 2, HSV_PURPLE},
+  {18, 2, HSV_PURPLE},
+  {29, 2, HSV_PURPLE},
+  {40, 2, HSV_PURPLE},
+  // DF
+  { 4, 2, HSV_ORANGE},
+  {42, 2, HSV_ORANGE},
+  // RESET
+  { 0, 1, HSV_RED},
+  { 7, 1, HSV_RED}
+);
+#    else
 const rgblight_segment_t PROGMEM led_layer_af[] = RGBLIGHT_LAYER_SEGMENTS(
   // left
   //{ 0, 3, HSV_SPRINGGREEN}, {5, 4, HSV_SPRINGGREEN}, {11, 3, HSV_SPRINGGREEN}, {16, 2, HSV_SPRINGGREEN},
@@ -56,18 +83,24 @@ const rgblight_segment_t PROGMEM led_layer_wh[] = RGBLIGHT_LAYER_SEGMENTS(
 
 const rgblight_segment_t PROGMEM led_layer_cl[] = RGBLIGHT_LAYER_SEGMENTS(
   // RGB control
+  { 1, 2, HSV_PURPLE},
+  { 6, 2, HSV_PURPLE},
+  {11, 2, HSV_PURPLE},
+  {17, 2, HSV_PURPLE},
   {26, 2, HSV_PURPLE},
   {30, 2, HSV_PURPLE},
   {36, 2, HSV_PURPLE},
   {40, 2, HSV_PURPLE},
-  // DF control
+  // DF
   { 4, 1, HSV_ORANGE},
   {22, 1, HSV_ORANGE},
   {23, 1, HSV_ORANGE},
   {43, 1, HSV_ORANGE},
   // RESET
+  { 0, 1, HSV_RED},
   {25, 1, HSV_RED}
 );
+#    endif
 
 const rgblight_segment_t* const PROGMEM led_layers[] = RGBLIGHT_LAYERS_LIST(
   [_AF] = led_layer_af,
@@ -106,11 +139,11 @@ void keyboard_post_init_user(void) {
 led_config_t g_led_config = {
   // indices
   LAYOUT_hexpad( NO_LED,
-       NO_LED,  NO_LED,  NO_LED,  NO_LED,  NO_LED,              0,  1,  2,  3,  4,
-     NO_LED,  NO_LED,  NO_LED,  NO_LED,  NO_LED,  NO_LED,         5,  6,  7,  8,  9,
-       NO_LED,  NO_LED,  NO_LED,  NO_LED,  NO_LED,             10, 11, 12, 13, 14,
-     NO_LED,  NO_LED,  NO_LED,  NO_LED,  NO_LED,  NO_LED,         15, 16, 17, 18, 19,
-       NO_LED,                                             		 20
+       0,  1,  2,  3,  4,             23, 24, 25, 26, 27,
+     5,  6,  7,  8,  9, 10,             28, 29, 30, 31, 32,
+      11, 12, 13, 14, 15,             33, 34, 35, 36, 37,
+    16, 17, 18, 19, 20, 21,             38, 39, 40, 41, 42,
+      22,                                             43
   ),
   // phys position
   LED_LAYOUT_hexpad(
@@ -126,8 +159,108 @@ led_config_t g_led_config = {
      4,  4,  4,  4,  4,  4,              4,  4,  4,  4,  4,
        4,  4,  4,  4,  4,              4,  4,  4,  4,  4,
      4,  4,  4,  4,  4,  4,              4,  4,  4,  4,  4,
-       4, 																						 4
+       4,                                              4
   ),
 };
 #		undef Q
+#endif
+
+#ifdef MIDI_ENABLE_TRASH
+uint8_t scale_base;
+uint8_t scale_mask[44 / 8];
+
+// always safe: +21 / -21 (one octave up/down vertically)
+
+uint8_t scales[] PROGMEM = {
+    // major
+    3, ?, 4
+
+    // minor
+    2, ?, 3, ?, 3
+
+    // blues
+    1, ?, 3, ?, 1, ?, 2
+};
+
+
+void set_base(uint8_t base) {
+    if (base >= 21) {
+        block_shift = 21;
+        base -= 21;
+    } else {
+        block_shift = 0;
+    }
+}
+
+void setled_scale(uint8_t o) {
+    // set o
+    if (base + o < 8)
+        // set o+8
+
+}
+
+void set_scale_major(void) {
+    // + + + + - -
+    //  O + + - - -
+
+    setled_scale(1);
+    setled_scale(2);
+    setled_scale(12-6);
+    setled_scale(12-5);
+    setled_scale(12-4);
+    setled_scale(12-3);
+}
+
+void set_scale_minor(void) {
+    // + + O + - -
+    //  + + + - - -
+
+    // + + - - - +
+    //  O + - - + +
+
+    setled_scale(1);
+    setled_scale(4);
+    setled_scale(5);
+    setled_scale(12-6);
+    setled_scale(12-5);
+    setled_scale(12-1);
+}
+
+void set_scale_blues(void) {
+    // + - + O + -
+    //  - + + + - -
+
+    // + + - - - +
+    //  O + - + - +
+
+    setled_scale(1);
+    setled_scale(3);
+    setled_scale(5);
+    setled_scale(12-6);
+    setled_scale(12-5);
+    setled_scale(12-1);
+}
+
+void set_scale_penta(void) {
+    // + + + - - -
+    //  O + - - -
+
+    setled_scale(1);
+    setled_scale(12-6);
+    setled_scale(12-5);
+    setled_scale(12-4);
+}
+
+void rgblight_set_post_kb(LED_TYPE *led, rgblight_ranges_t ranges) {
+    scale_base = 34;
+    set_scale_major();
+
+    uint8_t I = ranges.clipping_start_pos + ranges.clipping_num_leds;
+    for (uint8_t i = ranges.clipping_start_pos; i < I; i++) {
+        if (i == scale_base)
+            sethsv(128, 255, 255, &led[i]);
+        else if (!(scale_mask[i / 8] & (1 << (i%8))))
+            sethsv(0,0,0, &led[i]);
+    }
+}
 #endif

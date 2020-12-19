@@ -57,11 +57,10 @@
 #       define RGBLIGHT_EFFECT_BREATHING
 #       define RGBLIGHT_EFFECT_RAINBOW_MOOD
 #       define RGBLIGHT_EFFECT_RAINBOW_SWIRL
-#       define RGBLIGHT_LIMIT_VAL 180
+#       define RGBLIGHT_LIMIT_VAL 125
 #       define RGBLIGHT_LAYERS_OVERRIDE_RGB_OFF
 #       define RGBLIGHT_LAYERS
 #   endif
-#   define RGB_MATRIX_MAXIMUM_BRIGHTNESS 120
 #endif
 
 #ifdef RGBLIGHT_HEXPAD_HALF
@@ -105,13 +104,39 @@
   }
 #endif
 
-/*
 #define RGBLIGHT_LED_MAP LED_LAYOUT_hexpad(\
        0,  1,  2,  3,  4,              5,  6,  7,  8,  9,   \
     10, 11, 12, 13, 14, 15,             16, 17, 18, 19, 20, \
       21, 22, 23, 24, 25,             26, 27, 28, 29, 30,   \
     31, 32, 33, 34, 35, 36,             37, 38, 39, 40, 41, \
       42,                                             43    )
+
+/*
+uint8_t led_layout_get_row_start(uint8_t i) {
+    switch (i) {
+        case 0 ... 9: return 0;
+        case 10 ... 20: return 10;
+        case 21 ... 30: return 20;
+        case 31 ... 41: return 31;
+        default: return 255;
+    }
+}
+
+uint8_t led_layout_get_row_index(uint8_t i) {
+    switch (i) {
+        case 0 ... 9: return i;
+        case 10 ... 20: return i - 10;
+        case 21 ... 30: return i - 21;
+        case 31 ... 41: return i - 31;
+        default: return i;
+    }
+}
+
+uint8_t led_layout_get_row_length(uint8_t i) {
+    if (i < 10 || (i > 20 && i < 31))
+        return 10;
+    return 11;
+}
 */
 
 /*
