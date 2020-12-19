@@ -27,6 +27,7 @@
 #    include <hal.h>
 #    include "eeprom_stm32.h"
 #endif
+#include <alloca.h>
 #include "wait.h"
 #include "progmem.h"
 #include "sync_timer.h"
@@ -785,6 +786,8 @@ __attribute__((weak)) void rgblight_call_driver(LED_TYPE *start_led, uint8_t num
 
 #ifndef RGBLIGHT_CUSTOM_DRIVER
 
+__attribute__((weak)) void rgblight_set_post_kb(LED_TYPE *led, rgblight_ranges_t ranges) {}
+
 void rgblight_set(void) {
     LED_TYPE *start_led;
     uint8_t   num_leds = rgblight_ranges.clipping_num_leds;
@@ -812,12 +815,15 @@ void rgblight_set(void) {
     }
 #    endif
 
+    rgblight_set_post_kb(led, rgblight_ranges);
+
 #    ifdef RGBLIGHT_LED_MAP
-    LED_TYPE led0[RGBLED_NUM];
-    for (uint8_t i = 0; i < RGBLED_NUM; i++) {
-        led0[i] = led[pgm_read_byte(&led_map[i])];
+    start_led = alloca(rgblight_ranges.clipping_num_leds * sizeof(LED_TYPE));
+    uint8_t start = rgblight_ranges.clipping_start_pos;
+    uint8_t max = rgblight_ranges.clipping_start_pos + rgblight_ranges.clipping_num_leds;
+    for (uint8_t i = rgblight_ranges.clipping_start_pos; i < max; i++) {
+        start_led[i - start] = led[pgm_read_byte(&led_map[i])];
     }
-    start_led = led0 + rgblight_ranges.clipping_start_pos;
 #    else
     start_led = led + rgblight_ranges.clipping_start_pos;
 #    endif
