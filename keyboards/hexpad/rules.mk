@@ -22,4 +22,5 @@ COMMAND_ENABLE   = no  # Commands for debug and configuration
 NKRO_ENABLE      = yes # USB Nkey Rollover - if this doesn't work, see here: https://github.com/tmk/tmk_keyboard/wiki/FAQ#nkro-doesnt-work
 UNICODE_ENABLE   = yes # Unicode
 SLEEP_LED_ENABLE = no
-RGB_MATRIX_ENABLE = WS2812
+RGB_MATRIX_ENABLE = yes
+RGB_MATRIX_DRIVER = WS2812
