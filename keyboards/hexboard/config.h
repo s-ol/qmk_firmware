@@ -25,8 +25,8 @@
 #define USE_SERIAL
 #define SOFT_SERIAL_PIN D0
 #define SPLIT_HAND_PIN C5
+#define SPLIT_USB_DETECT
 #define MIDI_MODE_PIN D1
-#define MASTER_RIGHT
 
 /* MIDI */
 #ifdef MIDI_ENABLE

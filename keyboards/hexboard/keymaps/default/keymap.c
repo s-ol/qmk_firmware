@@ -19,7 +19,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   ),
 #ifdef MIDI_ENABLE
   [_WH] = LAYOUT_hexpad( _______,
-        MI_Cs_2, MI_Eb_2, MI_F_2 , MI_G_2 , MI_A_1 ,             MI_B_2 , MI_Cs_3, MI_Eb_3, MI_F_3 , MI_G_3,     \
+        MI_Cs_2, MI_Eb_2, MI_F_2 , MI_G_2 , MI_A_2 ,             MI_B_2 , MI_Cs_3, MI_Eb_3, MI_F_3 , MI_G_3,     \
     MI_Fs_1, MI_Ab_1, MI_Bb_1, MI_C_2 , MI_D_2 , MI_E_2 ,            MI_Fs_2, MI_Ab_2, MI_Bb_2, MI_C_3 , MI_OCTU, \
         MI_Cs_1, MI_Eb_1, MI_F_1 , MI_G_1 , MI_A_1 ,             MI_B_1 , MI_Cs_2, MI_Eb_2, MI_F_2 , MI_G_2,     \
     MI_Fs  , MI_Ab  , MI_Bb  , MI_C_1 , MI_D_1 , MI_E_1 ,            MI_Fs_1, MI_Ab_1, MI_Bb_1, MI_C_2 , MI_OCTD, \
@@ -43,7 +43,7 @@ const rgblight_segment_t PROGMEM led_layer_af[] = RGBLIGHT_LAYER_SEGMENTS(
 );
 
 const rgblight_segment_t PROGMEM led_layer_wh[] = RGBLIGHT_LAYER_SEGMENTS(
-  {20, 1, HSV_PURPLE}, {41, 1, HSV_PURPLE}, {42, 2, HSV_ORANGE}
+  {20, 1, HSV_RED}, {41, 1, HSV_RED}, {42, 2, HSV_ORANGE}
 );
 
 const rgblight_segment_t PROGMEM led_layer_cl[] = RGBLIGHT_LAYER_SEGMENTS(
@@ -55,7 +55,7 @@ const rgblight_segment_t PROGMEM led_layer_cl[] = RGBLIGHT_LAYER_SEGMENTS(
   { 8, 2, HSV_PURPLE},
   {18, 2, HSV_PURPLE},
   {29, 2, HSV_PURPLE},
-  {40, 2, HSV_PURPLE},
+  {39, 2, HSV_PURPLE},
   // DF
   { 4, 2, HSV_ORANGE},
   {42, 2, HSV_ORANGE},
