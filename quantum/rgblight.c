@@ -786,7 +786,7 @@ __attribute__((weak)) void rgblight_call_driver(LED_TYPE *start_led, uint8_t num
 
 #ifndef RGBLIGHT_CUSTOM_DRIVER
 
-__attribute__((weak)) void rgblight_set_post_kb(LED_TYPE *led, rgblight_ranges_t ranges) {}
+__attribute__((weak)) void rgblight_set_post_kb(LED_TYPE *led) {}
 
 void rgblight_set(void) {
     LED_TYPE *start_led;
@@ -803,6 +803,8 @@ void rgblight_set(void) {
         }
     }
 
+    rgblight_set_post_kb(led);
+
 #    ifdef RGBLIGHT_LAYERS
     if (rgblight_layers != NULL
 #        if !defined(RGBLIGHT_LAYERS_OVERRIDE_RGB_OFF)
@@ -814,8 +816,6 @@ void rgblight_set(void) {
         rgblight_layers_write();
     }
 #    endif
-
-    rgblight_set_post_kb(led, rgblight_ranges);
 
 #    ifdef RGBLIGHT_LED_MAP
     start_led = alloca(rgblight_ranges.clipping_num_leds * sizeof(LED_TYPE));
