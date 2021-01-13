@@ -155,8 +155,61 @@ void oled_putc(uint8_t letter) {
 }
 
 void oled_puts(const char* string) {
+  uint8_t cols[5];
+
+  i2c_start();
+  i2c_writebyte(0x78);
+  i2c_writebyte(0x40);
+
   while (*string > 0) {
-    oled_putc(*string);
-    ++string;
+    memcpy_P(cols, &font5x8[*string-32], 5);
+
+    for (uint8_t i=0; i<5; i++) {
+      i2c_writebyte(cols[i]);
+    }
+
+    i2c_writebyte(0x00);
+    string++;
   }
+  i2c_stop();
 }
+
+void oled_puts_P(const char* string) {
+  uint8_t c, cols[5];
+
+  i2c_start();
+  i2c_writebyte(0x78);
+  i2c_writebyte(0x40);
+
+  while ((c = pgm_read_byte(string++)) > 0) {
+    memcpy_P(cols, &font5x8[c-32], 5);
+
+    for (uint8_t i=0; i<5; i++) {
+      i2c_writebyte(cols[i]);
+    }
+
+    i2c_writebyte(0x00);
+
+  }
+  i2c_stop();
+}
+
+void oled_setx(uint8_t column) {
+  i2c_start();
+  i2c_writebyte(0x78);
+  i2c_writebyte(0x00);
+  i2c_writebyte(column & 0xf);
+  i2c_writebyte(0x10 | (column >> 4));
+  i2c_stop();
+}
+
+void oled_setyx(uint8_t row, uint8_t column) {
+  i2c_start();
+  i2c_writebyte(0x78);
+  i2c_writebyte(0x00);
+  i2c_writebyte(0xB0 | (row & 0x7));
+  i2c_writebyte(0x00 | (column & 0xf));
+  i2c_writebyte(0x10 | (column >> 4));
+  i2c_stop();
+}
+

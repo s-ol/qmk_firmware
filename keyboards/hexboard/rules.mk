@@ -30,3 +30,10 @@ SPLIT_KEYBOARD = yes
 SPLIT_TRANSPORT = serial
 
 SRC += i2c-bitbang.c oled.c
+
+ifeq ($(strip $(MIDI_ENABLE)), yes)
+	SRC += hxmidi.c transport.c
+	SPLIT_TRANSPORT = custom
+	OPT_DEFS += -DSERIAL_DRIVER_BITBANG
+	QUANTUM_LIB_SRC += serial.c
+endif

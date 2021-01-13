@@ -23,3 +23,16 @@
     { I1, I2, I3, I4, I5, NONE },                 \
     { NONE, J2, NONE, NONE, NONE, NONE },         \
   }
+
+enum extra_keycodes {
+    HX_N = SAFE_RANGE, // note
+    HX_N_END = HX_N+40,
+
+    HX_B, // scale base
+    HX_B_END = HX_B+40,
+
+    HX_OCTU,
+    HX_OCTD,
+    HX_SCLN,
+    HX_SCLP,
+};

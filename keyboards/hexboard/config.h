@@ -24,15 +24,17 @@
 /* Split options */
 #define USE_SERIAL
 #define SOFT_SERIAL_PIN D0
+#define SERIAL_USE_MULTI_TRANSACTION
 #define SPLIT_HAND_PIN C5
 #define SPLIT_USB_DETECT
 #define MIDI_MODE_PIN D1
 
 /* MIDI */
 #ifdef MIDI_ENABLE
-#   define MIDI_ADVANCED 1
+#   define MIDI_BASIC
 #   define MIDI_ENABLE_STRICT 1
-#   define MIDI_TONE_KEYCODE_OCTAVES 4
+#   define HXMIDI_ENABLE
+#   define NO_MUSIC_MODE
 #endif
 
 /* Set 0 if debouncing isn't needed */
@@ -57,7 +59,7 @@
 #       define RGBLIGHT_EFFECT_BREATHING
 #       define RGBLIGHT_EFFECT_RAINBOW_MOOD
 #       define RGBLIGHT_EFFECT_RAINBOW_SWIRL
-#       define RGBLIGHT_LIMIT_VAL 125
+#       define RGBLIGHT_LIMIT_VAL 200
 #       define RGBLIGHT_LAYERS_OVERRIDE_RGB_OFF
 #       define RGBLIGHT_LAYERS
 #   endif
@@ -110,34 +112,6 @@
       21, 22, 23, 24, 25,             26, 27, 28, 29, 30,   \
     31, 32, 33, 34, 35, 36,             37, 38, 39, 40, 41, \
       42,                                             43    )
-
-/*
-uint8_t led_layout_get_row_start(uint8_t i) {
-    switch (i) {
-        case 0 ... 9: return 0;
-        case 10 ... 20: return 10;
-        case 21 ... 30: return 20;
-        case 31 ... 41: return 31;
-        default: return 255;
-    }
-}
-
-uint8_t led_layout_get_row_index(uint8_t i) {
-    switch (i) {
-        case 0 ... 9: return i;
-        case 10 ... 20: return i - 10;
-        case 21 ... 30: return i - 21;
-        case 31 ... 41: return i - 31;
-        default: return i;
-    }
-}
-
-uint8_t led_layout_get_row_length(uint8_t i) {
-    if (i < 10 || (i > 20 && i < 31))
-        return 10;
-    return 11;
-}
-*/
 
 /*
  non-mapped layout:
