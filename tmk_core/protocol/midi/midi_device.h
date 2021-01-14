@@ -48,7 +48,9 @@ extern "C" {
 
 #include "midi_function_types.h"
 #include "bytequeue/bytequeue.h"
+#ifndef MIDI_INPUT_QUEUE_LENGTH
 #define MIDI_INPUT_QUEUE_LENGTH 192
+#endif
 
 typedef enum { IDLE, ONE_BYTE_MESSAGE = 1, TWO_BYTE_MESSAGE = 2, THREE_BYTE_MESSAGE = 3, SYSEX_MESSAGE } input_state_t;
 

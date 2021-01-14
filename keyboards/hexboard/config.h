@@ -33,6 +33,7 @@
 #ifdef MIDI_ENABLE
 #   define MIDI_BASIC
 #   define MIDI_ENABLE_STRICT 1
+#   define MIDI_INPUT_QUEUE_LENGTH 32
 #   define HXMIDI_ENABLE
 #   define NO_MUSIC_MODE
 #endif
