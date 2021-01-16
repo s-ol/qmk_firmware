@@ -8,7 +8,6 @@ uint8_t led2note(uint8_t i);
 
 hxmidi_status_t hxmidi_status = {
     .octave = 36,
-    .base = 38,
     .transpose = 20,
     .scale = SCALE_MAJOR,
     .flags = HXMIDI_FLAG_DIRTY,
@@ -70,8 +69,29 @@ uint8_t led2note(uint8_t i) {
     }
 }
 
+const uint8_t hxkb_led_override[] PROGMEM = {
+    HXLED_OVERRIDE_BYTE(HXLED_OVERRIDE_NONE, HXLED_OVERRIDE_NONE, HXLED_OVERRIDE_NONE, HXLED_OVERRIDE_DIM),
+    HXLED_OVERRIDE_BYTE(HXLED_OVERRIDE_DIM, HXLED_OVERRIDE_DIM, HXLED_OVERRIDE_DIM, HXLED_OVERRIDE_NONE),
+    HXLED_OVERRIDE_BYTE(HXLED_OVERRIDE_NONE, HXLED_OVERRIDE_NONE, HXLED_OVERRIDE_NONE, HXLED_OVERRIDE_NONE),
+    HXLED_OVERRIDE_BYTE(HXLED_OVERRIDE_NONE, HXLED_OVERRIDE_NONE, HXLED_OVERRIDE_DIM, HXLED_OVERRIDE_DIM),
+    HXLED_OVERRIDE_BYTE(HXLED_OVERRIDE_DIM, HXLED_OVERRIDE_NONE, HXLED_OVERRIDE_NONE, HXLED_OVERRIDE_NONE),
+    HXLED_OVERRIDE_BYTE(HXLED_OVERRIDE_NONE, HXLED_OVERRIDE_NONE, HXLED_OVERRIDE_NONE, HXLED_OVERRIDE_NONE),
+    HXLED_OVERRIDE_BYTE(HXLED_OVERRIDE_INVERT, HXLED_OVERRIDE_INVERT, HXLED_OVERRIDE_INVERT, HXLED_OVERRIDE_INVERT),
+    HXLED_OVERRIDE_BYTE(HXLED_OVERRIDE_NONE, HXLED_OVERRIDE_NONE, HXLED_OVERRIDE_NONE, HXLED_OVERRIDE_NONE),
+    HXLED_OVERRIDE_BYTE(HXLED_OVERRIDE_NONE, HXLED_OVERRIDE_DIM, HXLED_OVERRIDE_INVERT, HXLED_OVERRIDE_INVERT),
+    HXLED_OVERRIDE_BYTE(HXLED_OVERRIDE_DIM, HXLED_OVERRIDE_INVERT, HXLED_OVERRIDE_INVERT, HXLED_OVERRIDE_DIM),
+    HXLED_OVERRIDE_BYTE(HXLED_OVERRIDE_NONE, HXLED_OVERRIDE_NONE, HXLED_OVERRIDE_NONE, HXLED_OVERRIDE_NONE),
+};
+
+void hxkb_update_leds(void) {
+    memcpy_P(hxmidi_status.mask, hxkb_led_override, sizeof(hxkb_led_override));
+
+    hxmidi_status.flags = HXMIDI_FLAG_ENABLED | HXMIDI_FLAG_DIRTY;
+}
+
 void hxmidi_clear_leds(void) {
-    hxmidi_status.flags &= ~HXMIDI_FLAG_ENABLED;
+    // hxmidi_status.flags &= ~HXMIDI_FLAG_ENABLED;
+    hxkb_update_leds();
 
     oled_setyx(3, 5);
     oled_puts_P(PSTR("                    "));
@@ -81,12 +101,15 @@ void hxmidi_update_leds(void) {
     memset(hxmidi_status.mask, 0, sizeof(hxmidi_status.mask));
 
     for (uint8_t i = 0; i < 41; i++) {
-        uint8_t note = led2note(i) + hxmidi_status.transpose;
-        uint8_t part = pgm_read_byte(&scale_masks[hxmidi_status.scale][note % 12]);
+        uint8_t note = (led2note(i) + hxmidi_status.transpose) % 12;
+        uint8_t part = pgm_read_byte(&scale_masks[hxmidi_status.scale][note]);
         if (part == 0) {
-            hxmidi_status.mask[i / 8] |= (1 << (i%8));
+            hxmidi_status.mask[i / 4] |= HXLED_OVERRIDE_INVERT << HXLED_SHIFT(i);
+        } else if (note == 0) {
+            hxmidi_status.mask[i / 4] |= HXLED_OVERRIDE_HSV << HXLED_SHIFT(i);
         }
     }
+
 
     oled_setyx(3, 5);
     oled_puts("oct: ");
@@ -117,7 +140,6 @@ bool process_record_kb(uint16_t keycode, keyrecord_t *record) {
         }
         case HX_B ... HX_B_END:
             if (record->event.pressed) {
-                hxmidi_status.base = keycode - HX_B;
                 hxmidi_status.transpose = 12 - (led2note(keycode - HX_B) % 12);
                 hxmidi_update_leds();
             }
@@ -156,13 +178,24 @@ void rgblight_set_post_kb(LED_TYPE *led) {
         return;
 
     for (uint8_t i = 0; i < RGBLED_NUM; i++) {
-        if (i == hxmidi_status.base) {
-            sethsv(128, 255, 255, &led[i]);
-        } else if ((hxmidi_status.mask[i / 8] & (1 << (i%8)))) {
-            uint8_t r = led[i].r >> 1;
-            led[i].r = led[i].g >> 1;
-            led[i].g = led[i].b >> 1;
-            led[i].b = r;
+        switch (HXLED_LOOKUP(hxmidi_status.mask, i)) {
+            case HXLED_OVERRIDE_HSV:
+                sethsv(128, 255, 255, &led[i]);
+                break;
+            case HXLED_OVERRIDE_INVERT: {
+                uint8_t r = led[i].r >> 1;
+                led[i].r = led[i].g >> 1;
+                led[i].g = led[i].b >> 1;
+                led[i].b = r;
+                break;
+            }
+            case HXLED_OVERRIDE_DIM:
+                led[i].r = 0;
+                led[i].g = 0;
+                led[i].b = 0;
+                break;
+            default:
+                break;
         }
     }
 }
