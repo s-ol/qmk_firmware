@@ -168,9 +168,9 @@ bool process_record_kb(uint16_t keycode, keyrecord_t *record) {
                 hxmidi_update_leds();
             }
             return false;
-        default:
-            return true;
     }
+
+    return process_record_user(keycode, record);
 }
 
 void rgblight_set_post_kb(LED_TYPE *led) {
