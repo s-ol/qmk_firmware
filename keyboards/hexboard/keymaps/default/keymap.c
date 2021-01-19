@@ -27,56 +27,56 @@
 #define HX_CAPS     MT(MOD_RCTL, KC_CAPS)
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
-  [_AF] = LAYOUT_hexboard(
-        KC_D   , KC_F   , KC_K   , _______, TG(_CL),             TG(_CL), _______, KC_J   , KC_U   , KC_R   ,     \
-    KC_W   , KC_E   , KC_T   , KC_G   , _______, _______,            _______, KC_B   , KC_N   , KC_I   , KC_L   , \
-        KC_S   , KC_C   , KC_V   , HX_TAB , HX_LSFT,             HX_RSFT, KC_ENT , KC_Y   , KC_P   , KC_O   ,     \
-    KC_A   , KC_X   , _______, KC_LGUI, HX_SPC , HX_ESC ,            HX_BSPC, HX_CAPS, _______, KC_M   , KC_H   , \
-        KC_Z   ,                                                                                     KC_Q         \
+  [_AF] = LAYOUT_pointy(
+        KC_D   , KC_F   , KC_K   , _______, TG(_CL),             TG(_CL), _______, KC_J   , KC_U   , KC_R   ,
+    KC_W   , KC_E   , KC_T   , KC_G   , _______, _______,            _______, KC_B   , KC_N   , KC_I   , KC_L   ,
+        KC_S   , KC_C   , KC_V   , HX_TAB , HX_LSFT,             HX_RSFT, KC_ENT , KC_Y   , KC_P   , KC_O   ,
+    KC_A   , KC_X   , _______, KC_LGUI, HX_SPC , HX_ESC ,            HX_BSPC, HX_CAPS, _______, KC_M   , KC_H   ,
+        KC_Z   ,                                                                                     KC_Q
   ),
-  [_SB] = LAYOUT_hexboard(
-        KC_LCBR, KC_RCBR, _______, _______, _______,             _______, _______, _______, KC_SLSH, KC_BSLS,     \
-    _______, KC_LPRN, KC_RPRN, _______, _______, _______,            _______, _______, KC_COMM, KC_DOT , KC_EQL , \
-        KC_GRV , KC_LBRC, KC_RBRC, _______, _______,             _______, _______, KC_QUOT, KC_SCLN, KC_MINS,     \
-    _______, _______, _______, _______, _______, _______,            _______, _______, _______, _______, _______, \
-        _______,                                                                                     _______      \
+  [_SB] = LAYOUT_pointy(
+        KC_LCBR, KC_RCBR, _______, _______, _______,             _______, _______, _______, KC_SLSH, KC_BSLS,
+    _______, KC_LPRN, KC_RPRN, _______, _______, _______,            _______, _______, KC_COMM, KC_DOT , KC_EQL ,
+        KC_GRV , KC_LBRC, KC_RBRC, _______, _______,             _______, _______, KC_QUOT, KC_SCLN, KC_MINS,
+    _______, _______, _______, _______, _______, _______,            _______, _______, _______, _______, _______,
+        _______,                                                                                     _______
   ),
-  [_MV] = LAYOUT_hexboard(
-        KC_PGDN, KC_PGUP, _______, _______, _______,             _______, _______, _______, KC_HOME, KC_END ,     \
-    KC_DEL , KC_VOLU, KC_VOLD, _______, _______, _______,            _______, _______, KC_LEFT, KC_UP  , KC_INS , \
-        _______, KC_MNXT, KC_MPRV, _______, _______,             _______, _______, _______, KC_DOWN, KC_RGHT,     \
-    _______, _______, _______, _______, _______, _______,            _______, _______, _______, _______, _______, \
-        _______,                                                                                     _______      \
+  [_MV] = LAYOUT_pointy(
+        KC_PGDN, KC_PGUP, _______, _______, _______,             _______, _______, _______, KC_HOME, KC_END ,
+    KC_DEL , KC_VOLU, KC_VOLD, _______, _______, _______,            _______, _______, KC_LEFT, KC_UP  , KC_INS ,
+        _______, KC_MNXT, KC_MPRV, _______, _______,             _______, _______, _______, KC_DOWN, KC_RGHT,
+    _______, _______, _______, _______, _______, _______,            _______, _______, _______, _______, _______,
+        _______,                                                                                     _______
   ),
-  [_NM] = LAYOUT_hexboard(
-        KC_3   , KC_4   , KC_5   , _______, _______,             _______, _______, KC_6   , KC_7   , KC_8   ,     \
-    KC_2   , KC_F1  , KC_F2  , KC_F3  , KC_PSCR, _______,            _______, KC_F4  , KC_F5  , KC_F6  , KC_9   , \
-        KC_F7  , KC_F8  , KC_F9  , _______, _______,             _______, _______, KC_F10 , KC_F11 , KC_F12 ,     \
-    KC_1   , KC_F1  , KC_F4  , _______, _______, _______,            _______, _______, _______, _______, KC_0   , \
-        _______,                                                                                     _______      \
+  [_NM] = LAYOUT_pointy(
+        KC_3   , KC_4   , KC_5   , _______, _______,             _______, _______, KC_6   , KC_7   , KC_8   ,
+    KC_2   , KC_F1  , KC_F2  , KC_F3  , KC_PSCR, _______,            _______, KC_F4  , KC_F5  , KC_F6  , KC_9   ,
+        KC_F7  , KC_F8  , KC_F9  , _______, _______,             _______, _______, KC_F10 , KC_F11 , KC_F12 ,
+    KC_1   , KC_F1  , KC_F4  , _______, _______, _______,            _______, _______, _______, _______, KC_0   ,
+        _______,                                                                                     _______
   ),
 #ifdef MIDI_ENABLE
-  [HXM] = LAYOUT_hexboard(
-        HX_N+ 0, HX_N+ 1, HX_N+ 2, HX_N+ 3, HX_N+ 4,             HX_N+ 5, HX_N+ 6, HX_N+ 7, HX_N+ 8, HX_N+ 9,     \
-    HX_N+10, HX_N+11, HX_N+12, HX_N+13, HX_N+14, HX_N+15,            HX_N+16, HX_N+17, HX_N+18, HX_N+19, HX_OCTU, \
-        HX_N+21, HX_N+22, HX_N+23, HX_N+24, HX_N+25,             HX_N+26, HX_N+27, HX_N+28, HX_N+29, HX_N+30,     \
-    HX_N+31, HX_N+32, HX_N+33, HX_N+34, HX_N+35, HX_N+36,            HX_N+37, HX_N+38, HX_N+39, HX_N+40, HX_OCTD, \
-        TG(_CL),                                                                                     MO(HXC)      \
+  [HXM] = LAYOUT_pointy(
+        HX_N+ 0, HX_N+ 1, HX_N+ 2, HX_N+ 3, HX_N+ 4,             HX_N+ 5, HX_N+ 6, HX_N+ 7, HX_N+ 8, HX_N+ 9,
+    HX_N+10, HX_N+11, HX_N+12, HX_N+13, HX_N+14, HX_N+15,            HX_N+16, HX_N+17, HX_N+18, HX_N+19, HX_OCTU,
+        HX_N+21, HX_N+22, HX_N+23, HX_N+24, HX_N+25,             HX_N+26, HX_N+27, HX_N+28, HX_N+29, HX_N+30,
+    HX_N+31, HX_N+32, HX_N+33, HX_N+34, HX_N+35, HX_N+36,            HX_N+37, HX_N+38, HX_N+39, HX_N+40, HX_OCTD,
+        TG(_CL),                                                                                     MO(HXC)
   ),
-  [HXC] = LAYOUT_hexboard(
-        HX_B+ 0, HX_B+ 1, HX_B+ 2, HX_B+ 3, HX_B+ 4,             RESET  , HX_B+ 6, HX_B+ 7, HX_B+ 8, HX_B+ 9,     \
-    HX_B+10, HX_B+11, HX_B+12, HX_B+13, HX_B+14, HX_B+15,            HX_B+16, HX_B+17, HX_B+18, HX_B+19, HX_SCLN, \
-        HX_B+21, HX_B+22, HX_B+23, HX_B+24, HX_B+25,             HX_B+26, HX_B+27, HX_B+28, HX_B+29, HX_B+30,     \
-    HX_B+31, HX_B+32, HX_B+33, HX_B+34, HX_B+35, HX_B+36,            HX_B+37, HX_B+38, HX_B+39, HX_B+40, HX_SCLP, \
-        _______,                                                                                     _______      \
+  [HXC] = LAYOUT_pointy(
+        HX_B+ 0, HX_B+ 1, HX_B+ 2, HX_B+ 3, HX_B+ 4,             RESET  , HX_B+ 6, HX_B+ 7, HX_B+ 8, HX_B+ 9,
+    HX_B+10, HX_B+11, HX_B+12, HX_B+13, HX_B+14, HX_B+15,            HX_B+16, HX_B+17, HX_B+18, HX_B+19, HX_SCLN,
+        HX_B+21, HX_B+22, HX_B+23, HX_B+24, HX_B+25,             HX_B+26, HX_B+27, HX_B+28, HX_B+29, HX_B+30,
+    HX_B+31, HX_B+32, HX_B+33, HX_B+34, HX_B+35, HX_B+36,            HX_B+37, HX_B+38, HX_B+39, HX_B+40, HX_SCLP,
+        _______,                                                                                     _______
   ),
 #endif
-  [_CL] = LAYOUT_hexboard(
-          RESET, RGB_TOG, RGB_MOD, _______, DF(_AF),             DF(_AF), _______,   RESET, RGB_TOG, RGB_MOD,     \
-    _______, RGB_HUD, RGB_HUI, _______, _______, _______,            _______, _______, RGB_HUD, RGB_HUI, _______, \
-        RGB_SAD, RGB_SAI, _______,  _______, _______,            _______, _______, _______, RGB_SAD, RGB_SAI,     \
-    _______, RGB_VAD, RGB_VAI, _______, _______, _______,            _______, _______, RGB_VAD, RGB_VAI, _______, \
-        DF(HXM),                                                                                      DF(HXM)     \
+  [_CL] = LAYOUT_pointy(
+          RESET, RGB_TOG, RGB_MOD, _______, DF(_AF),             DF(_AF), _______,   RESET, RGB_TOG, RGB_MOD,
+    _______, RGB_HUD, RGB_HUI, _______, _______, _______,            _______, _______, RGB_HUD, RGB_HUI, _______,
+        RGB_SAD, RGB_SAI, _______,  _______, _______,            _______, _______, _______, RGB_SAD, RGB_SAI,
+    _______, RGB_VAD, RGB_VAI, _______, _______, _______,            _______, _______, RGB_VAD, RGB_VAI, _______,
+        DF(HXM),                                                                                      DF(HXM)
   ),
 };
 
@@ -199,7 +199,7 @@ void keyboard_post_init_user(void) {
 
 led_config_t g_led_config = {
   // indices
-  LAYOUT_hexboard(
+  LAYOUT_pointy(
        0,  1,  2,  3,  4,             23, 24, 25, 26, 27,
      5,  6,  7,  8,  9, 10,             28, 29, 30, 31, 32,
       11, 12, 13, 14, 15,             33, 34, 35, 36, 37,
@@ -207,7 +207,7 @@ led_config_t g_led_config = {
       22,                                             43
   ),
   // phys position
-  LED_LAYOUT_hexboard(
+  LED_LAYOUT_pointy(
            Q({ 24,69}), Q({ 40,69}), Q({ 56,69}), Q({ 72,69}), Q({ 88,69}),             Q({104,69}), Q({120,69}), Q({136,69}), Q({152,69}), Q({168,69}),
     Q({ 16,55}), Q({ 32,55}), Q({ 48,55}), Q({ 64,55}), Q({ 55,55}), Q({ 96,55}),             Q({112,55}), Q({128,55}), Q({144,55}), Q({160,55}), Q({176,55}),
            Q({ 24,42}), Q({ 40,42}), Q({ 56,42}), Q({ 72,42}), Q({ 88,42}),             Q({104,42}), Q({120,42}), Q({136,42}), Q({152,42}), Q({168,42}),
@@ -215,7 +215,7 @@ led_config_t g_led_config = {
            Q({ 24,14}),                                             																																				Q({168,14})
   ),
   // flags
-  LED_LAYOUT_hexboard(
+  LED_LAYOUT_pointy(
        4,  4,  4,  4,  4,              4,  4,  4,  4,  4,
      4,  4,  4,  4,  4,  4,              4,  4,  4,  4,  4,
        4,  4,  4,  4,  4,              4,  4,  4,  4,  4,

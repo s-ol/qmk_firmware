@@ -5,7 +5,7 @@
   "width": 10,
   "height": 12.2,
   "layouts": {
-    "LAYOUT_hexboard": {
+    "LAYOUT_pointy": {
       "layout": [
         { "x": 1, "y": 0 },
         { "x": 2, "y": 0 },

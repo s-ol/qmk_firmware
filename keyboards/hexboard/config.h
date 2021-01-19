@@ -60,7 +60,7 @@
 #endif
 
 /* -------- LEFT HAND --------     -------- RIGHT HAND ------- */
-#define LED_LAYOUT_hexboard(                                    \
+#define LED_LAYOUT_pointy(                                      \
                                                                 \
       A2, A3, A4, A5, A6,             F1, F2, F3, F4, F5,       \
     B1, B2, B3, B4, B5, B6,             G2, G3, G4, G5, G1,     \
@@ -69,6 +69,11 @@
       C6,                                             J2      ) \
                                                                 \
   {                         \
+    A2, A3, A4, A5, A6,     \
+    B1, B2, B3, B4, B5, B6, \
+    C1, C2, C3, C4, C5,     \
+    D6, D1, D2, D3, D4, D5, \
+    C6,                     \
     F1, F2, F3, F4, F5,     \
     G2, G3, G4, G5, G1,     \
     H2, H3, H4, H5, H1,     \
@@ -76,7 +81,7 @@
     J2,                     \
   }
 
-#define RGBLIGHT_LED_MAP LED_LAYOUT_hexboard(               \
+#define RGBLIGHT_LED_MAP LED_LAYOUT_pointy(                        \
        0,  1,  2,  3,  4,              5,  6,  7,  8,  9,   \
     10, 11, 12, 13, 14, 15,             16, 17, 18, 19, 20, \
       21, 22, 23, 24, 25,             26, 27, 28, 29, 30,   \
