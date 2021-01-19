@@ -2,7 +2,7 @@
 
 #include "quantum.h"
 
-#define LAYOUT_hexpad(              \
+#define LAYOUT(                     \
                                     \
           k01, k05,                 \
         k02, k06, k10,              \
@@ -16,7 +16,7 @@
         { KC_NO, k08, k12, k16   }, \
     }
 
-#define LED_LAYOUT_hexpad(     \
+#define LED_LAYOUT(            \
                                \
           k01, k05,            \
         k02, k06, k10,         \

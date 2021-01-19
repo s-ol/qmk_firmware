@@ -1,7 +1,7 @@
 #include QMK_KEYBOARD_H
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
-    [0] = LAYOUT_hexpad(
+    [0] = LAYOUT(
                  RGB_MOD, KC_B   ,
             KC_E   , KC_T   , KC_Z   ,
         KC_S   , KC_C   , KC_V   , KC_O   ,
