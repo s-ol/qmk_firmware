@@ -3,7 +3,7 @@
 #include "config_common.h"
 
 /* USB Device descriptor parameter */
-#define VENDOR_ID       0x732d
+#define VENDOR_ID       0x732D
 #define PRODUCT_ID      0x2C62
 #define DEVICE_VER      0x0001
 #define MANUFACTURER    s-ol
@@ -11,6 +11,13 @@
 #define DESCRIPTION     Hybrid Keyboard / MIDI controller
 
 #define DF_IS_ALSO_TO
+
+#define TAPPING_TERM 150
+#define TAPPING_TOGGLE 2
+#define COMBO_TERM 75
+#define COMBO_COUNT 7
+#define COMBO_ALLOW_ACTION_KEYS
+#define COMBO_KEY_BUFFER_LENGTH 2
 
 /* key matrix  */
 #define MATRIX_ROWS 10
@@ -29,12 +36,12 @@
 #define SPLIT_USB_DETECT
 #define MIDI_MODE_PIN D1
 
+#define HXMIDI_ENABLE
 /* MIDI */
 #ifdef MIDI_ENABLE
 #   define MIDI_BASIC
 #   define MIDI_ENABLE_STRICT 1
 #   define MIDI_INPUT_QUEUE_LENGTH 32
-#   define HXMIDI_ENABLE
 #   define NO_MUSIC_MODE
 #endif
 

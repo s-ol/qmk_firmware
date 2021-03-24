@@ -10,6 +10,8 @@ bool is_keyboard_left(void) {
 }
 
 void keyboard_post_init_kb(void) {
+    debug_enable=true;
+
     i2c_init();
     oled_init();
     oled_clear(0);

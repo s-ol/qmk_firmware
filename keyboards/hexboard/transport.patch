@@ -1,0 +1,87 @@
+--- transport.new.c	2021-03-25 14:37:17.412206853 +0100
++++ transport.c	2021-03-25 14:40:59.079066664 +0100
+@@ -12,6 +12,10 @@
+ #    include "rgblight.h"
+ #endif
+ 
++#ifdef HXMIDI_ENABLE
++#		 include "hxmidi.h"
++#endif
++
+ #ifdef BACKLIGHT_ENABLE
+ #    include "backlight.h"
+ #endif
+@@ -77,11 +81,18 @@
+ volatile Serial_m2s_buffer_t serial_m2s_buffer = {};
+ uint8_t volatile status0                       = 0;
+ 
++#ifdef HXMIDI_ENABLE
++uint8_t volatile status_hxmidi = 0;
++#endif
++
+ enum serial_transaction_id {
+     GET_SLAVE_MATRIX = 0,
+ #if defined(RGBLIGHT_ENABLE) && defined(RGBLIGHT_SPLIT)
+     PUT_RGBLIGHT,
+ #endif
++#ifdef HXMIDI_ENABLE
++    PUT_HXMIDI,
++#endif
+ };
+ 
+ SSTD_t transactions[] = {
+@@ -99,6 +110,12 @@
+             (uint8_t *)&status_rgblight, sizeof(serial_rgblight), (uint8_t *)&serial_rgblight, 0, NULL  // no slave to master transfer
+         },
+ #endif
++#ifdef HXMIDI_ENABLE
++    [PUT_HXMIDI] =
++        {
++            (uint8_t *)&status_hxmidi, sizeof(hxmidi_status), (uint8_t *)&hxmidi_status, 0, NULL  // no slave to master transfer
++        },
++#endif
+ };
+ 
+ void transport_master_init(void) { soft_serial_initiator_init(transactions, TID_LIMIT(transactions)); }
+@@ -130,6 +147,25 @@
+ #    define transport_rgblight_slave()
+ #endif
+ 
++#ifdef HXMIDI_ENABLE
++void transport_hxmidi_master(void) {
++    if (hxmidi_status.flags & HXMIDI_FLAG_DIRTY) {
++        if (soft_serial_transaction(PUT_HXMIDI) == TRANSACTION_END) {
++            hxmidi_status.flags &= ~HXMIDI_FLAG_DIRTY;
++        }
++    }
++}
++
++void transport_hxmidi_slave(void) {
++    if (status_hxmidi == TRANSACTION_ACCEPTED) {
++        status_hxmidi = TRANSACTION_END;
++    }
++}
++#else
++#    define transport_hxmidi_master()
++#    define transport_hxmidi_slave()
++#endif
++
+ bool transport_master(matrix_row_t master_matrix[], matrix_row_t slave_matrix[]) {
+ #ifndef SERIAL_USE_MULTI_TRANSACTION
+     if (soft_serial_transaction() != TRANSACTION_END) {
+@@ -137,6 +173,7 @@
+     }
+ #else
+     transport_rgblight_master();
++    transport_hxmidi_master();
+     if (soft_serial_transaction(GET_SLAVE_MATRIX) != TRANSACTION_END) {
+         return false;
+     }
+@@ -179,6 +216,7 @@
+ 
+ void transport_slave(matrix_row_t master_matrix[], matrix_row_t slave_matrix[]) {
+     transport_rgblight_slave();
++    transport_hxmidi_slave();
+ #ifndef DISABLE_SYNC_TIMER
+     sync_timer_update(serial_m2s_buffer.sync_timer);
+ #endif

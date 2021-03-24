@@ -6,13 +6,14 @@
 #include "quantum.h"
 
 #define ROWS_PER_HAND (MATRIX_ROWS / 2)
+#define SYNC_TIMER_OFFSET 2
 
 #ifdef RGBLIGHT_ENABLE
 #    include "rgblight.h"
 #endif
 
 #ifdef HXMIDI_ENABLE
-#    include "hxmidi.h"
+#		 include "hxmidi.h"
 #endif
 
 #ifdef BACKLIGHT_ENABLE
@@ -38,11 +39,24 @@ typedef struct _Serial_s2m_buffer_t {
 } Serial_s2m_buffer_t;
 
 typedef struct _Serial_m2s_buffer_t {
+#ifdef SPLIT_MODS_ENABLE
+    uint8_t      real_mods;
+    uint8_t      weak_mods;
+#    ifndef NO_ACTION_ONESHOT
+    uint8_t      oneshot_mods;
+#    endif
+#endif
+#ifndef DISABLE_SYNC_TIMER
+    uint32_t     sync_timer;
+#endif
+#ifdef SPLIT_TRANSPORT_MIRROR
+    matrix_row_t mmatrix[ROWS_PER_HAND];
+#endif
 #ifdef BACKLIGHT_ENABLE
-    uint8_t backlight_level;
+    uint8_t      backlight_level;
 #endif
 #ifdef WPM_ENABLE
-    uint8_t current_wpm;
+    uint8_t      current_wpm;
 #endif
 } Serial_m2s_buffer_t;
 
@@ -152,7 +166,7 @@ void transport_hxmidi_slave(void) {
 #    define transport_hxmidi_slave()
 #endif
 
-bool transport_master(matrix_row_t matrix[]) {
+bool transport_master(matrix_row_t master_matrix[], matrix_row_t slave_matrix[]) {
 #ifndef SERIAL_USE_MULTI_TRANSACTION
     if (soft_serial_transaction() != TRANSACTION_END) {
         return false;
@@ -167,7 +181,10 @@ bool transport_master(matrix_row_t matrix[]) {
 
     // TODO:  if MATRIX_COLS > 8 change to unpack()
     for (int i = 0; i < ROWS_PER_HAND; ++i) {
-        matrix[i] = serial_s2m_buffer.smatrix[i];
+        slave_matrix[i]              = serial_s2m_buffer.smatrix[i];
+#ifdef SPLIT_TRANSPORT_MIRROR
+        serial_m2s_buffer.mmatrix[i] = master_matrix[i];
+#endif
     }
 
 #ifdef BACKLIGHT_ENABLE
@@ -181,17 +198,35 @@ bool transport_master(matrix_row_t matrix[]) {
 
 #ifdef WPM_ENABLE
     // Write wpm to slave
-    serial_m2s_buffer.current_wpm = get_current_wpm();
+    serial_m2s_buffer.current_wpm  = get_current_wpm();
+#endif
+
+#ifdef SPLIT_MODS_ENABLE
+    serial_m2s_buffer.real_mods    = get_mods();
+    serial_m2s_buffer.weak_mods    = get_weak_mods();
+#    ifndef NO_ACTION_ONESHOT
+    serial_m2s_buffer.oneshot_mods = get_oneshot_mods();
+#    endif
+#endif
+#ifndef DISABLE_SYNC_TIMER
+    serial_m2s_buffer.sync_timer   = sync_timer_read32() + SYNC_TIMER_OFFSET;
 #endif
     return true;
 }
 
-void transport_slave(matrix_row_t matrix[]) {
+void transport_slave(matrix_row_t master_matrix[], matrix_row_t slave_matrix[]) {
     transport_rgblight_slave();
     transport_hxmidi_slave();
+#ifndef DISABLE_SYNC_TIMER
+    sync_timer_update(serial_m2s_buffer.sync_timer);
+#endif
+
     // TODO: if MATRIX_COLS > 8 change to pack()
     for (int i = 0; i < ROWS_PER_HAND; ++i) {
-        serial_s2m_buffer.smatrix[i] = matrix[i];
+        serial_s2m_buffer.smatrix[i] = slave_matrix[i];
+#ifdef SPLIT_TRANSPORT_MIRROR
+        master_matrix[i]             = serial_m2s_buffer.mmatrix[i];
+#endif
     }
 #ifdef BACKLIGHT_ENABLE
     backlight_set(serial_m2s_buffer.backlight_level);
@@ -203,5 +238,13 @@ void transport_slave(matrix_row_t matrix[]) {
 
 #ifdef WPM_ENABLE
     set_current_wpm(serial_m2s_buffer.current_wpm);
+#endif
+
+#ifdef SPLIT_MODS_ENABLE
+    set_mods(serial_m2s_buffer.real_mods);
+    set_weak_mods(serial_m2s_buffer.weak_mods);
+#    ifndef NO_ACTION_ONESHOT
+    set_oneshot_mods(serial_m2s_buffer.oneshot_mods);
+#    endif
 #endif
 }

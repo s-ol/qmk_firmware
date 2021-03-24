@@ -60,4 +60,5 @@ enum extra_keycodes {
     HX_OCTD,
     HX_SCLN,
     HX_SCLP,
+    HX_SAFE_RANGE
 };

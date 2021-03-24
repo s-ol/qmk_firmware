@@ -23,8 +23,9 @@ NKRO_ENABLE      = no  # USB Nkey Rollover - if this doesn't work, see here: htt
 UNICODE_ENABLE   = no  # Unicode
 SLEEP_LED_ENABLE = no
 MUSIC_ENABLE     = no
-MIDI_ENABLE      = yes
+MIDI_ENABLE      = no
 RGBLIGHT_ENABLE  = yes
+COMBO_ENABLE     = yes
 # RGB_MATRIX_ENABLE = WS2812
 
 SPLIT_KEYBOARD = yes
@@ -32,9 +33,7 @@ SPLIT_TRANSPORT = serial
 
 SRC += i2c-bitbang.c oled.c
 
-ifeq ($(strip $(MIDI_ENABLE)), yes)
-	SRC += hxmidi.c transport.c
-	SPLIT_TRANSPORT = custom
-	OPT_DEFS += -DSERIAL_DRIVER_BITBANG
-	QUANTUM_LIB_SRC += serial.c
-endif
+SRC += hxmidi.c transport.c
+SPLIT_TRANSPORT = custom
+OPT_DEFS += -DSERIAL_DRIVER_BITBANG
+QUANTUM_LIB_SRC += serial.c

@@ -1,59 +1,89 @@
 #include QMK_KEYBOARD_H
 #include "oled.h"
+#include "hxmidi.h"
 
-#define _AF 0
-#define _SB 1
-#define _NM 2
-#define _MV 3
-#ifdef HXMIDI_ENABLE
-#   include "hxmidi.h"
-
-#   define HXM (_MV + 1)
-#   define HXC (HXM + 1)
-#   define _CL (HXC + 1)
-
-#   define HX_LAYER_MASK (~(3UL << HXM))
+#define _AF 0x0
+#define _NS 0x1
+#define _FS 0x2
+#define _MV 0x3
+#define _CL 0xF
+#ifdef MIDI_ENABLE
+#    define HXM 0x8
+#    define HXC 0x9
+#    define HX_LAYER_MASK (~(3UL << HXM))
 #else
-#   define HXM _AF
-#   define _CL (_AF + 1)
+#    define HXM _AF
+#    define HX_SAFE_RANGE SAFE_RANGE
 #endif
 
-#define HX_SPC      LT(_SB, KC_SPC)
-#define HX_BSPC     LT(_NM, KC_BSPC)
-#define HX_LSFT     LT(_NM, KC_LSFT)
-#define HX_RSFT     LT(_SB, KC_RSFT)
-#define HX_TAB      LT(_MV, KC_TAB)
-#define HX_ESC      MT(MOD_LALT, KC_ESC)
-#define HX_CAPS     MT(MOD_RCTL, KC_CAPS)
+enum combo_keycodes {
+    HX_CBm = HX_SAFE_RANGE,
+};
+
+enum combo_events {
+    COMBO_Am,
+    COMBO_AB,
+    COMBO_AC,
+    COMBO_Cx,
+    COMBO_1m,
+    COMBO_12,
+    COMBO_13,
+};
+
+#define HX_SPC      LT(_NS, KC_SPC)
+#define HX_ENT      LT(_FS, KC_ENT)
+#define HX_ESC      LT(_MV, KC_ESC)
+#define HX_BSPC     MT(MOD_LSFT, KC_BSPC)
+#define HX_TAB      MT(MOD_RSFT, KC_TAB)
+#define HX_DEL      MT(MOD_LCTL, KC_DEL)
+#define HX_INS      MT(MOD_RCTL, KC_INS)
+
+const uint16_t PROGMEM combo_Am[] = { HX_SPC, HX_CBm , COMBO_END };
+const uint16_t PROGMEM combo_AB[] = { HX_SPC, HX_BSPC, COMBO_END };
+const uint16_t PROGMEM combo_Ax[] = { HX_SPC, HX_ESC , COMBO_END };
+const uint16_t PROGMEM combo_Cx[] = { HX_ESC, HX_DEL , COMBO_END };
+const uint16_t PROGMEM combo_1m[] = { HX_ENT, HX_CBm , COMBO_END };
+const uint16_t PROGMEM combo_12[] = { HX_ENT, HX_TAB , COMBO_END };
+const uint16_t PROGMEM combo_13[] = { HX_ENT, HX_INS , COMBO_END };
+
+combo_t key_combos[COMBO_COUNT] = {
+    [COMBO_Am] = COMBO(combo_Am, MO(_FS)),
+    [COMBO_AB] = COMBO(combo_AB, LGUI_T(KC_CAPS)),
+    [COMBO_AC] = COMBO(combo_Ax, C_S_T(KC_DEL)),
+    [COMBO_Cx] = COMBO(combo_Cx, LCTL_T(KC_DEL)),
+    [COMBO_1m] = COMBO(combo_1m, MO(_NS)),
+    [COMBO_12] = COMBO(combo_12, RGUI_T(KC_END)),
+    [COMBO_13] = COMBO(combo_13, RCTL_T(KC_HOME)),
+};
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [_AF] = LAYOUT_pointy(
         KC_D   , KC_F   , KC_K   , _______, TG(_CL),             TG(_CL), _______, KC_J   , KC_U   , KC_R   ,
-    KC_W   , KC_E   , KC_T   , KC_G   , _______, _______,            _______, KC_B   , KC_N   , KC_I   , KC_L   ,
-        KC_S   , KC_C   , KC_V   , HX_TAB , HX_LSFT,             HX_RSFT, KC_ENT , KC_Y   , KC_P   , KC_O   ,
-    KC_A   , KC_X   , _______, KC_LGUI, HX_SPC , HX_ESC ,            HX_BSPC, HX_CAPS, _______, KC_M   , KC_H   ,
+    KC_W   , KC_E   , KC_T   , KC_G   , _______, TG(_MV),            _______, KC_B   , KC_N   , KC_I   , KC_L   ,
+        KC_S   , KC_C   , KC_V   , HX_CBm , HX_DEL ,             HX_INS , HX_CBm , KC_Y   , KC_P   , KC_O   ,
+    KC_A   , KC_X   , KC_LALT, HX_BSPC, HX_SPC , HX_ESC ,            HX_ENT , HX_TAB , KC_RALT, KC_M   , KC_H   ,
         KC_Z   ,                                                                                     KC_Q
   ),
-  [_SB] = LAYOUT_pointy(
-        KC_LCBR, KC_RCBR, _______, _______, _______,             _______, _______, _______, KC_SLSH, KC_BSLS,
-    _______, KC_LPRN, KC_RPRN, _______, _______, _______,            _______, _______, KC_COMM, KC_DOT , KC_EQL ,
-        KC_GRV , KC_LBRC, KC_RBRC, _______, _______,             _______, _______, KC_QUOT, KC_SCLN, KC_MINS,
-    _______, _______, _______, _______, _______, _______,            _______, _______, _______, _______, _______,
-        _______,                                                                                     _______
+  [_NS] = LAYOUT_pointy(
+        KC_3   , KC_4   , KC_5   , _______, _______,             _______, _______, KC_6   , KC_7   , KC_8   ,
+    KC_2   , KC_LPRN, KC_LBRC, KC_MINS, _______, _______,            _______, KC_UNDS, KC_RBRC, KC_RPRN, KC_9   ,
+        KC_LCBR, KC_DOT , KC_QUOT, _______, _______,             _______, _______, KC_DQUO, KC_COLN, KC_RCBR,
+    KC_1   , KC_COMM, _______, _______, _______, _______,            _______, _______, _______, KC_SCLN, KC_0   ,
+        KC_LABK,                                                                                     KC_RABK
+  ),
+  [_FS] = LAYOUT_pointy(
+        KC_F3  , KC_F4  , KC_F5  , KC_F11 , _______,             _______, KC_F12 , KC_F6  , KC_F7  , KC_F8  ,
+    KC_F2  , KC_EQL , KC_ASTR, KC_TILD, _______, _______,            _______, KC_CIRC, KC_GRV , KC_PLUS, KC_F9  ,
+        KC_SLSH, KC_DLR , KC_HASH, _______, _______,             _______, _______, KC_AT  , KC_PIPE, KC_BSLS,
+    KC_F1  , KC_EXLM, _______, _______, _______, _______,            _______, _______, _______, KC_QUES, KC_F10 ,
+        KC_AMPR,                                                                                     KC_PERC
   ),
   [_MV] = LAYOUT_pointy(
-        KC_PGDN, KC_PGUP, _______, _______, _______,             _______, _______, _______, KC_HOME, KC_END ,
-    KC_DEL , KC_VOLU, KC_VOLD, _______, _______, _______,            _______, _______, KC_LEFT, KC_UP  , KC_INS ,
-        _______, KC_MNXT, KC_MPRV, _______, _______,             _______, _______, _______, KC_DOWN, KC_RGHT,
-    _______, _______, _______, _______, _______, _______,            _______, _______, _______, _______, _______,
-        _______,                                                                                     _______
-  ),
-  [_NM] = LAYOUT_pointy(
-        KC_3   , KC_4   , KC_5   , _______, _______,             _______, _______, KC_6   , KC_7   , KC_8   ,
-    KC_2   , KC_F1  , KC_F2  , KC_F3  , KC_PSCR, _______,            _______, KC_F4  , KC_F5  , KC_F6  , KC_9   ,
-        KC_F7  , KC_F8  , KC_F9  , _______, _______,             _______, _______, KC_F10 , KC_F11 , KC_F12 ,
-    KC_1   , KC_F1  , KC_F4  , _______, _______, _______,            _______, _______, _______, _______, KC_0   ,
-        _______,                                                                                     _______
+        KC_2   , KC_3   , KC_F   , _______, _______,             _______, _______, KC_VOLU, KC_MPRV, KC_MPLY,
+    KC_1   , KC_W   , KC_D   , KC_E   , _______, _______,            _______, KC_VOLD, KC_LEFT, KC_UP  , KC_MNXT,
+        KC_A   , KC_S   , KC_R   , _______, _______,             _______, _______, KC_PGUP, KC_DOWN, KC_RGHT,
+    KC_TAB , KC_X   , KC_C   , KC_LSFT, KC_SPC , KC_LCTL,            _______, _______, _______, KC_PGDN, _______,
+        KC_Z   ,                                                                                     _______
   ),
 #ifdef MIDI_ENABLE
   [HXM] = LAYOUT_pointy(
@@ -148,31 +178,39 @@ const rgblight_segment_t PROGMEM led_layer_cl[] = RGBLIGHT_LAYER_SEGMENTS(
 #    endif
 
 const rgblight_segment_t* const PROGMEM led_layers[] = RGBLIGHT_LAYERS_LIST(
-  [_AF] = led_layer_af,
-#ifdef HXMIDI_ENABLE
-  [HXM] = led_layer_wh,
-#endif
-  [_CL] = led_layer_cl
+  led_layer_af,
+  led_layer_wh,
+  led_layer_cl
 );
 
 layer_state_t layer_state_set_user(layer_state_t state) {
-  rgblight_set_layer_state(_AF, layer_state_cmp(state, _AF));
-  rgblight_set_layer_state(_CL, layer_state_cmp(state, _CL));
+  rgblight_set_layer_state(0, layer_state_cmp(state, _AF));
+  rgblight_set_layer_state(2, layer_state_cmp(state, _CL));
 
-#ifdef HXMIDI_ENABLE
-  rgblight_set_layer_state(HXM, layer_state_cmp(state, HXM));
+#ifdef MIDI_ENABLE
+  rgblight_set_layer_state(1, layer_state_cmp(state, HXM));
 
   if (layer_state_cmp(state, HXM))
       hxmidi_update_leds();
   else
       hxmidi_clear_leds();
+#else
+  hxmidi_clear_leds();
 #endif
 
   oled_setyx(0, 6*16);
   if (layer_state_cmp(state, _CL))
     oled_puts(" CTRL");
+#ifdef MIDI_ENABLE
   else if (layer_state_cmp(state, HXM))
     oled_puts("WK/HY");
+#endif
+  else if (layer_state_cmp(state, _MV))
+    oled_puts(" WASD");
+  else if (layer_state_cmp(state, _FS))
+    oled_puts(" FNSM");
+  else if (layer_state_cmp(state, _NS))
+    oled_puts(" NMSM");
   else
     oled_puts(" TYPE");
 
@@ -180,9 +218,9 @@ layer_state_t layer_state_set_user(layer_state_t state) {
 }
 
 layer_state_t default_layer_state_set_user(layer_state_t state) {
-  rgblight_set_layer_state(_AF, layer_state_cmp(state, _AF));
-#ifdef HXMIDI_ENABLE
-  rgblight_set_layer_state(HXM, layer_state_cmp(state, HXM));
+  rgblight_set_layer_state(0, layer_state_cmp(state, _AF));
+#ifdef MIDI_ENABLE
+  rgblight_set_layer_state(1, layer_state_cmp(state, HXM));
 #endif
 
   return state;

@@ -23,9 +23,11 @@ enum HXLED_OVERRIDE {
 #define HXLED_OVERRIDE_BYTE(a, b, c, d) (a | (b << 2) | (c << 4) | (d << 6))
 
 typedef struct {
+#ifdef MIDI_ENABLE
     uint8_t octave;
     uint8_t transpose;
     hxmidi_scale_t scale;
+#endif
     uint8_t flags;
     uint8_t mask[11];
 } hxmidi_status_t;
