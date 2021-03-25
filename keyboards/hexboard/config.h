@@ -18,6 +18,7 @@
 #define COMBO_COUNT 7
 #define COMBO_ALLOW_ACTION_KEYS
 #define COMBO_KEY_BUFFER_LENGTH 2
+#define EXTRA_SHORT_COMBOS
 
 /* key matrix  */
 #define MATRIX_ROWS 10
