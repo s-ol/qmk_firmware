@@ -80,7 +80,7 @@ static uint8_t static_effect_table[] = {
 #define _RGBM_MULTI_DYNAMIC(sym) RGBLIGHT_MODE_##sym,
 #define _RGBM_TMP_STATIC(sym, msym) RGBLIGHT_MODE_##msym,
 #define _RGBM_TMP_DYNAMIC(sym, msym) RGBLIGHT_MODE_##msym,
-static uint8_t mode_base_table[] = {
+static const uint8_t PROGMEM mode_base_table[] = {
     0,  // RGBLIGHT_MODE_zero
 #include "rgblight_modes.h"
 };
@@ -479,7 +479,7 @@ void rgblight_sethsv_noeeprom_old(uint8_t hue, uint8_t sat, uint8_t val) {
 
 void rgblight_sethsv_eeprom_helper(uint8_t hue, uint8_t sat, uint8_t val, bool write_to_eeprom) {
     if (rgblight_config.enable) {
-        rgblight_status.base_mode = mode_base_table[rgblight_config.mode];
+        rgblight_status.base_mode = pgm_read_byte(&mode_base_table[rgblight_config.mode]);
         if (rgblight_config.mode == RGBLIGHT_MODE_STATIC_LIGHT) {
             // same static color
             LED_TYPE tmp_led;
