@@ -27,7 +27,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #    define TAPPING_TOGGLE 5
 #endif
 
-#define WAITING_BUFFER_SIZE 8
+#ifndef WAITING_BUFFER_SIZE
+#    define WAITING_BUFFER_SIZE 8
+#endif
 
 #ifndef NO_ACTION_TAPPING
 uint16_t get_record_keycode(keyrecord_t *record, bool update_layer_cache);
