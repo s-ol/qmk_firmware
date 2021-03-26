@@ -95,6 +95,7 @@ void hxmidi_update_leds(void) {
     oled_puts_P(scale_names[hxmidi_status.scale]);
 
     hxmidi_status.flags = HXMIDI_FLAG_ENABLED | HXMIDI_FLAG_DIRTY;
+    rgblight_set();
 }
 
 bool process_record_kb(uint16_t keycode, keyrecord_t *record) {
@@ -159,19 +160,14 @@ const uint8_t hxkb_led_override[] PROGMEM = {
     HXLED_OVERRIDE_BYTE(HXLED_OVERRIDE_INVERT, HXLED_OVERRIDE_INVERT, HXLED_OVERRIDE_INVERT, HXLED_OVERRIDE_INVERT),
     HXLED_OVERRIDE_BYTE(HXLED_OVERRIDE_NONE, HXLED_OVERRIDE_NONE, HXLED_OVERRIDE_NONE, HXLED_OVERRIDE_NONE),
     HXLED_OVERRIDE_BYTE(HXLED_OVERRIDE_NONE, HXLED_OVERRIDE_DIM, HXLED_OVERRIDE_INVERT, HXLED_OVERRIDE_INVERT),
-    HXLED_OVERRIDE_BYTE(HXLED_OVERRIDE_DIM, HXLED_OVERRIDE_INVERT, HXLED_OVERRIDE_INVERT, HXLED_OVERRIDE_DIM),
+    HXLED_OVERRIDE_BYTE(HXLED_OVERRIDE_INVERT, HXLED_OVERRIDE_INVERT, HXLED_OVERRIDE_INVERT, HXLED_OVERRIDE_DIM),
     HXLED_OVERRIDE_BYTE(HXLED_OVERRIDE_NONE, HXLED_OVERRIDE_NONE, HXLED_OVERRIDE_NONE, HXLED_OVERRIDE_NONE),
 };
 
-void hxkb_update_leds(void) {
-    memcpy_P(hxmidi_status.mask, hxkb_led_override, sizeof(hxkb_led_override));
-
-    hxmidi_status.flags = HXMIDI_FLAG_ENABLED | HXMIDI_FLAG_DIRTY;
-}
-
 void hxmidi_clear_leds(void) {
-    // hxmidi_status.flags &= ~HXMIDI_FLAG_ENABLED;
-    hxkb_update_leds();
+    memcpy_P(hxmidi_status.mask, hxkb_led_override, sizeof(hxkb_led_override));
+    hxmidi_status.flags = HXMIDI_FLAG_ENABLED | HXMIDI_FLAG_DIRTY;
+    rgblight_set();
 
     oled_setyx(3, 5);
     oled_puts_P(PSTR("                     "));

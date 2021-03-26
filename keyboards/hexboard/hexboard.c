@@ -1,6 +1,7 @@
 #include "hexboard.h"
 #include "i2c-bitbang.h"
 #include "oled.h"
+#include "rgblight.h"
 
 bool is_keyboard_left(void) {
      // Test pin SPLIT_HAND_PIN for High/Low, if high it's right hand
@@ -9,9 +10,9 @@ bool is_keyboard_left(void) {
      return !readPin(SPLIT_HAND_PIN);
 }
 
-void keyboard_post_init_kb(void) {
-    debug_enable=true;
+extern rgblight_status_t rgblight_status;
 
+void keyboard_post_init_kb(void) {
     i2c_init();
     oled_init();
     oled_clear(0);
@@ -30,4 +31,6 @@ void keyboard_post_init_kb(void) {
     oled_puts(" :)");
 
     keyboard_post_init_user();
+
+    rgblight_status.change_flags |= (RGBLIGHT_STATUS_CHANGE_MODE | RGBLIGHT_STATUS_CHANGE_HSVS);
 }
