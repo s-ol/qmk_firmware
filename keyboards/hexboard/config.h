@@ -12,15 +12,17 @@
 
 #define DF_IS_ALSO_TO
 
+/* Combo and tapping */
 #define TAPPING_TERM 150
 #define TAPPING_TOGGLE 2
+#define WAITING_BUFFER_SIZE 8
 #define COMBO_TERM 75
 #define COMBO_COUNT 6
 #define COMBO_ALLOW_ACTION_KEYS
 #define COMBO_KEY_BUFFER_LENGTH 2
 #define EXTRA_SHORT_COMBOS
 
-/* key matrix  */
+/* Key matrix  */
 #define MATRIX_ROWS 10
 #define MATRIX_COLS 6
 #define DIODE_DIRECTION ROW2COL
@@ -89,7 +91,7 @@
     J2,                     \
   }
 
-#define RGBLIGHT_LED_MAP LED_LAYOUT_pointy(                        \
+#define RGBLIGHT_LED_MAP LED_LAYOUT_pointy(                 \
        0,  1,  2,  3,  4,              5,  6,  7,  8,  9,   \
     10, 11, 12, 13, 14, 15,             16, 17, 18, 19, 20, \
       21, 22, 23, 24, 25,             26, 27, 28, 29, 30,   \
