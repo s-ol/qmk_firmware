@@ -13,62 +13,51 @@
 #    define HX_LAYER_MASK (~(3UL << HXM))
 #else
 #    define HXM _AF
-#    define HX_SAFE_RANGE SAFE_RANGE
 #endif
 
-enum combo_keycodes {
-    HX_CBm = HX_SAFE_RANGE,
-};
+#define THMB_L1 LT(_NS, KC_SPC)
+#define THMB_L2 KC_BSPC
+#define THMB_L3 KC_DEL
+#define THMB_L4 KC_CAPS
+#define THMB_Lm KC_LGUI
+#define THMB_Lx LT(_MV, KC_TAB)
+#define THMB_R1 LT(_FS, KC_ESC)
+#define THMB_R2 LSFT_T(KC_ENT)
+#define THMB_R3 RCTL_T(KC_INS)
+#define THMB_Rm KC_RGUI
+#define THMB_R4 KC_RALT
 
-enum combo_events {
-    COMBO_Am,
-    COMBO_AB,
-    COMBO_AC,
-    COMBO_Cx,
-    COMBO_1m,
-    COMBO_12,
-    COMBO_13,
-};
-
-#define HX_SPC      LT(_NS, KC_SPC)
-#define HX_ENT      LT(_FS, KC_ENT)
-#define HX_ESC      LT(_MV, KC_ESC)
-#define HX_BSPC     MT(MOD_LSFT, KC_BSPC)
-#define HX_TAB      MT(MOD_RSFT, KC_TAB)
-#define HX_DEL      MT(MOD_LCTL, KC_DEL)
-#define HX_INS      MT(MOD_RCTL, KC_INS)
-
-const uint16_t PROGMEM combo_Am[] = { HX_SPC, HX_CBm , COMBO_END };
-const uint16_t PROGMEM combo_AB[] = { HX_SPC, HX_BSPC, COMBO_END };
-const uint16_t PROGMEM combo_Ax[] = { HX_SPC, HX_ESC , COMBO_END };
-const uint16_t PROGMEM combo_Cx[] = { HX_ESC, HX_DEL , COMBO_END };
-const uint16_t PROGMEM combo_1m[] = { HX_ENT, HX_CBm , COMBO_END };
-const uint16_t PROGMEM combo_12[] = { HX_ENT, HX_TAB , COMBO_END };
-const uint16_t PROGMEM combo_13[] = { HX_ENT, HX_INS , COMBO_END };
+// const uint16_t PROGMEM combo_L1m[] = { THMB_L1, THMB_Lm, COMBO_END };
+// const uint16_t PROGMEM combo_L13[] = { THMB_L1, THMB_L3, COMBO_END };
+const uint16_t PROGMEM combo_L1x[] = { THMB_L1, THMB_Lx, COMBO_END };
+const uint16_t PROGMEM combo_Lx3[] = { THMB_L1, THMB_Lx, COMBO_END };
+const uint16_t PROGMEM combo_R1m[] = { THMB_R1, THMB_Rm, COMBO_END };
+const uint16_t PROGMEM combo_L12[] = { THMB_L1, THMB_L2, COMBO_END };
+const uint16_t PROGMEM combo_R12[] = { THMB_R1, THMB_R2, COMBO_END };
+const uint16_t PROGMEM combo_R13[] = { THMB_R1, THMB_R3, COMBO_END };
 
 combo_t key_combos[COMBO_COUNT] = {
-    [COMBO_Am] = COMBO(combo_Am, MO(_FS)),
-    [COMBO_AB] = COMBO(combo_AB, LGUI_T(KC_CAPS)),
-    [COMBO_AC] = COMBO(combo_Ax, C_S_T(KC_DEL)),
-    [COMBO_Cx] = COMBO(combo_Cx, LCTL_T(KC_DEL)),
-    [COMBO_1m] = COMBO(combo_1m, MO(_NS)),
-    [COMBO_12] = COMBO(combo_12, RGUI_T(KC_END)),
-    [COMBO_13] = COMBO(combo_13, RCTL_T(KC_HOME)),
+    COMBO(combo_L1x, KC_LGUI),
+    COMBO(combo_Lx3, KC_DEL),  // makes pressing DEL easier
+    COMBO(combo_R1m, KC_RGUI), // makes pressing GUI easier
+    COMBO(combo_L12, KC_HOME),
+    COMBO(combo_R12, KC_END),
+    COMBO(combo_R13, C_S_T(KC_INS)),
 };
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [_AF] = LAYOUT_pointy(
         KC_D   , KC_F   , KC_K   , _______, TG(_CL),             TG(_CL), _______, KC_J   , KC_U   , KC_R   ,
     KC_W   , KC_E   , KC_T   , KC_G   , _______, TG(_MV),            _______, KC_B   , KC_N   , KC_I   , KC_L   ,
-        KC_S   , KC_C   , KC_V   , HX_CBm , HX_DEL ,             HX_INS , HX_CBm , KC_Y   , KC_P   , KC_O   ,
-    KC_A   , KC_X   , KC_LALT, HX_BSPC, HX_SPC , HX_ESC ,            HX_ENT , HX_TAB , KC_RALT, KC_M   , KC_H   ,
+        KC_S   , KC_C   , KC_V   , THMB_Lm, THMB_L3,             THMB_R3, THMB_Rm, KC_Y   , KC_P   , KC_O   ,
+    KC_A   , KC_X   , KC_LALT, THMB_L2, THMB_L1, THMB_Lx,            THMB_R1, THMB_R2, KC_RALT, KC_M   , KC_H   ,
         KC_Z   ,                                                                                     KC_Q
   ),
   [_NS] = LAYOUT_pointy(
         KC_3   , KC_4   , KC_5   , _______, _______,             _______, _______, KC_6   , KC_7   , KC_8   ,
-    KC_2   , KC_LPRN, KC_LBRC, KC_MINS, _______, _______,            _______, KC_UNDS, KC_RBRC, KC_RPRN, KC_9   ,
-        KC_LCBR, KC_DOT , KC_QUOT, _______, _______,             _______, _______, KC_DQUO, KC_COLN, KC_RCBR,
-    KC_1   , KC_COMM, _______, _______, _______, _______,            _______, _______, _______, KC_SCLN, KC_0   ,
+    KC_2   , KC_LBRC, KC_LPRN, KC_MINS, _______, _______,            _______, KC_UNDS, KC_RPRN, KC_RBRC, KC_9   ,
+        KC_LCBR, KC_COMM, KC_DOT , _______, _______,             _______, _______, KC_COLN, KC_SCLN, KC_RCBR,
+    KC_1   , KC_QUOT, _______, _______, _______, _______,            _______, _______, _______, KC_DQUO, KC_0   ,
         KC_LABK,                                                                                     KC_RABK
   ),
   [_FS] = LAYOUT_pointy(
