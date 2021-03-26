@@ -44,7 +44,7 @@
         1
       ]
     },
-    "\n3\n\nF3\n\n\n\n\n\nD",
+    "\n3\n\nF3\n\n\n\n\n\nX",
     "\n4\n\nF4\n\n\n\n\n\nF",
     "\n5\n\nF5\n\n\n\n\n\nK",
     {
@@ -90,7 +90,7 @@
     },
     "\n{\n\n/\n\n\n\n\n\nS",
     "\n,\n\n$\n\n\n\n\n\nC",
-    "\n.\n\n#\n\n\n\n\n\nV",
+    "\n.\n\n#\n\n\n\n\n\nD",
     {
       "c": "#aacccc",
       "t": "#000000",
@@ -116,19 +116,10 @@
     {
       "f": 3
     },
-    "\n'\n\n!\n\n\n\n\n\nX",
+    "\n'\n\n!\n\n\n\n\n\nV",
     {
       "c": "#bbcccc",
       "t": "#000000",
-      "a": 7
-    },
-    "CAPS",
-    {
-      "c": "#aacccc"
-    },
-    "⌫",
-    {
-      "t": "#000000\n#7d2e2e",
       "a": 5,
       "fa": [
         2,
@@ -139,6 +130,16 @@
         0,
         2
       ]
+    },
+    "\nALT\n\n\n\n\nCAPS",
+    {
+      "c": "#aacccc",
+      "a": 7
+    },
+    "⌫",
+    {
+      "t": "#000000\n#7d2e2e",
+      "a": 5
     },
     "\nNUMSYM\n\n\n\n\nSPACE",
     "\nMOVE\n\n\n\n\nTAB"
@@ -190,7 +191,7 @@
     {
       "f": 3
     },
-    "\n8\n\nF8\n\n\n\n\n\nR"
+    "\n8\n\nF8\n\n\n\n\n\nP"
   ],
   [
     {
@@ -217,7 +218,7 @@
     {
       "f": 3
     },
-    "\n9\n\nF9\n\n\n\n\n\nL"
+    "\n9\n\nF9\n\n\n\n\n\nY"
   ],
   [
     {
@@ -246,11 +247,11 @@
       "a": 4,
       "f": 3
     },
-    "\n:\n\n@\n\n\n\n\n\nY",
+    "\n:\n\n@\n\n\n\n\n\nL",
     {
       "f": 3
     },
-    "\n;\n\n|\n\n\n\n\n\nP",
+    "\n;\n\n|\n\n\n\n\n\nR",
     {
       "f": 3
     },

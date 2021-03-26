@@ -18,7 +18,7 @@
 #define THMB_L1 LT(_NS, KC_SPC)
 #define THMB_L2 KC_BSPC
 #define THMB_L3 KC_DEL
-#define THMB_L4 KC_CAPS
+#define THMB_L4 LALT_T(KC_CAPS)
 #define THMB_Lm KC_LGUI
 #define THMB_Lx LT(_MV, KC_TAB)
 #define THMB_R1 LT(_FS, KC_ESC)
@@ -47,10 +47,10 @@ combo_t key_combos[COMBO_COUNT] = {
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [_AF] = LAYOUT_pointy(
-        KC_D   , KC_F   , KC_K   , _______, TG(_CL),             TG(_CL), _______, KC_J   , KC_U   , KC_R   ,
-    KC_W   , KC_E   , KC_T   , KC_G   , _______, TG(_MV),            _______, KC_B   , KC_N   , KC_I   , KC_L   ,
-        KC_S   , KC_C   , KC_V   , THMB_Lm, THMB_L3,             THMB_R3, THMB_Rm, KC_Y   , KC_P   , KC_O   ,
-    KC_A   , KC_X   , KC_LALT, THMB_L2, THMB_L1, THMB_Lx,            THMB_R1, THMB_R2, KC_RALT, KC_M   , KC_H   ,
+        KC_X   , KC_F   , KC_K   , _______, TG(_CL),             TG(_CL), _______, KC_J   , KC_U   , KC_P   ,
+    KC_W   , KC_E   , KC_T   , KC_G   , _______, TG(_MV),            _______, KC_B   , KC_N   , KC_I   , KC_Y   ,
+        KC_S   , KC_C   , KC_D   , THMB_Lm, THMB_L3,             THMB_R3, THMB_Rm, KC_L   , KC_R   , KC_O   ,
+    KC_A   , KC_V   , KC_LALT, THMB_L2, THMB_L1, THMB_Lx,            THMB_R1, THMB_R2, KC_RALT, KC_M   , KC_H   ,
         KC_Z   ,                                                                                     KC_Q
   ),
   [_NS] = LAYOUT_pointy(
