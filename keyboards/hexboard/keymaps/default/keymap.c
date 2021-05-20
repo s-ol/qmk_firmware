@@ -37,10 +37,10 @@ const uint16_t PROGMEM combo_R12[] = { THMB_R1, THMB_R2, COMBO_END };
 const uint16_t PROGMEM combo_R13[] = { THMB_R1, THMB_R3, COMBO_END };
 
 combo_t key_combos[COMBO_COUNT] = {
-    COMBO(combo_L1x, KC_LGUI),
     COMBO(combo_Lx3, KC_DEL),  // makes pressing DEL easier
     COMBO(combo_R1m, KC_RGUI), // makes pressing GUI easier
     COMBO(combo_L12, KC_HOME),
+    COMBO(combo_L1x, KC_LGUI),
     COMBO(combo_R12, KC_END),
     COMBO(combo_R13, C_S_T(KC_INS)),
 };
@@ -222,7 +222,7 @@ void keyboard_post_init_user(void) {
 #endif
 
 #ifdef RGB_MATRIX_ENABLE
-#		define Q(...) __VA_ARGS__
+#    define Q(...) __VA_ARGS__
 
 led_config_t g_led_config = {
   // indices
@@ -239,7 +239,7 @@ led_config_t g_led_config = {
     Q({ 16,55}), Q({ 32,55}), Q({ 48,55}), Q({ 64,55}), Q({ 55,55}), Q({ 96,55}),             Q({112,55}), Q({128,55}), Q({144,55}), Q({160,55}), Q({176,55}),
            Q({ 24,42}), Q({ 40,42}), Q({ 56,42}), Q({ 72,42}), Q({ 88,42}),             Q({104,42}), Q({120,42}), Q({136,42}), Q({152,42}), Q({168,42}),
     Q({ 16,28}), Q({ 32,28}), Q({ 48,28}), Q({ 64,28}), Q({ 28,28}), Q({ 96,28}),             Q({112,28}), Q({128,28}), Q({144,28}), Q({160,28}), Q({176,28}),
-           Q({ 24,14}),                                             																																				Q({168,14})
+           Q({ 24,14}),                                                                                                                     Q({168,14})
   ),
   // flags
   LED_LAYOUT_pointy(
@@ -250,7 +250,7 @@ led_config_t g_led_config = {
        4,                                              4
   ),
 };
-#		undef Q
+#    undef Q
 #endif
 
 
